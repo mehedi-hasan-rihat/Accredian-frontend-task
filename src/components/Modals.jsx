@@ -1,21 +1,40 @@
 import React, { useState } from "react";
 import { Modal, Box, Button, Typography, TextField } from "@mui/material";
+import toast from "react-hot-toast";
 
 const SimpleModal = () => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
     const Name = form.name.value;
-    const FriensName = form.FriendName.value;
+    const FriendName = form.FriendName.value;
     const FriendEmail = form.FriendEmail.value;
     const Course = form.course.value;
-    console.log(Name, FriendEmail, FriensName, Course);
-  };
+    console.log(Name, FriendEmail, FriendName, Course);
+    const postData ={Name, FriendEmail, FriendName, Course}
+    console.log(postData);
+    try {
+      const response = await fetch("http://localhost:4000/refers", {
+        method: "POST",
+        body: JSON.stringify(postData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const jsonData = await response.json();
+      console.log(jsonData);
+      if (jsonData.message === "Data inserted successfully") {
+        toast.success("Refer Added to DB 🛢️");
 
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div>
       <button

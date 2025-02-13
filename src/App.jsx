@@ -6,6 +6,8 @@ import Banner from './components/Banner'
 import HowDoReffer from './components/HowDoReffer'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
+
+
 export default function App() {
   return (
     <div>
@@ -16,6 +18,7 @@ export default function App() {
       <HowDoReffer/>
       <FAQ/>
       <Contact/>
+    
     </div>
   )
 }
