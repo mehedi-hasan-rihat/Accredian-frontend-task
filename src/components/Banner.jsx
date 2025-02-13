@@ -2,10 +2,11 @@ import React from "react";
 import Refer from "../assets/refer.png";
 import Money from "../assets/money.png";
 import MoneyFull from "../assets/moneyFull.png";
+import Modals from '../components/Modals'
 
 export default function Banner() {
   return (
-    <div className="bg-[#EEF5FF] shadow-md h-[690px] mt-7 container mx-auto rounded-3xl flex items-center p-6 relative">
+    <div className="bg-[#EEF5FF] shadow-md h-[690px] mt-7 max-w-[1360px] mx-auto rounded-3xl flex items-center p-6 relative">
       {/* Left Section */}
       <div className="max-w-[500px] pl-11 flex flex-col space-y-20">
         <img
@@ -22,9 +23,10 @@ export default function Banner() {
             <span className="text-[#1A73E8] font-semibold">Rs. 15,000</span>
           </p>
         </div>
-        <button className="bg-[#1A73E8] rounded-md py-2 px-5 w-max text-white ">
+        {/* <button className="bg-[#1A73E8] rounded-md py-2 px-5 w-max text-white ">
           Reffer Now
-        </button>
+        </button> */}      <Modals/>
+        {/* <Button text={"Refer Now"}/> */}
       </div>
 
       {/* Right Section */}
@@ -55,6 +57,18 @@ export default function Banner() {
           />
         </div>
       </div>
+
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+

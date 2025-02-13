@@ -4,7 +4,7 @@ import DownArrow from '../assets/vector-1.png'
 
 export default function Navbar() {
   return (
-    <div className='flex items-center justify-between container mx-auto mt-5'>
+    <div className='flex items-center justify-between max-w-[1360px] mx-auto mt-5'>
         <div className="flex gap-8 items-center">
             <img src={Logo} alt="Logo" />
             <div className="bg-[#1A73E8] text-white flex items-center gap-2 p-2 px-4 w-max rounded-md">
