@@ -4,9 +4,16 @@ import toast from "react-hot-toast";
 
 const SimpleModal = () => {
   const [open, setOpen] = useState(false);
+  const [errors, setErrors] = useState({
+    name: "",
+    FriendName: "",
+    FriendEmail: "",
+    course: "",
+  });
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -14,34 +21,61 @@ const SimpleModal = () => {
     const FriendName = form.FriendName.value;
     const FriendEmail = form.FriendEmail.value;
     const Course = form.course.value;
-    console.log(Name, FriendEmail, FriendName, Course);
-    const postData ={Name, FriendEmail, FriendName, Course}
-    console.log(postData);
-    try {
-      const response = await fetch("http://localhost:4000/refers", {
-        method: "POST",
-        body: JSON.stringify(postData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const jsonData = await response.json();
-      console.log(jsonData);
-      if (jsonData.message === "Data inserted successfully") {
-        toast.success("Refer Added to DB 🛢️");
 
+    let valid = true;
+    let newErrors = { name: "", FriendName: "", FriendEmail: "", course: "" };
+
+    // Simple validation
+    if (!Name) {
+      valid = false;
+      newErrors.name = "Name is required";
+    }
+    if (!FriendName) {
+      valid = false;
+      newErrors.FriendName = "Friend's Name is required";
+    }
+    if (!FriendEmail) {
+      valid = false;
+      newErrors.FriendEmail = "Friend's Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(FriendEmail)) {
+      valid = false;
+      newErrors.FriendEmail = "Please enter a valid email";
+    }
+    if (!Course) {
+      valid = false;
+      newErrors.course = "Course Name is required";
+    }
+
+    setErrors(newErrors);
+
+    if (valid) {
+      const postData = { Name, FriendEmail, FriendName, Course };
+      try {
+        const response = await fetch("http://localhost:4000/refers", {
+          method: "POST",
+          body: JSON.stringify(postData),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const jsonData = await response.json();
+        if (jsonData.message === "Data inserted successfully") {
+          toast.success("Refer Added to DB 🛢️");
+        }
+        handleClose();
+      } catch (error) {
+        toast.error(error.message);
       }
-    } catch (error) {
-      toast.error(error.message);
     }
   };
+
   return (
     <div>
       <button
         onClick={handleOpen}
-        className="bg-[#1A73E8] rounded-md py-2 px-5 w-max text-white "
+        className="bg-[#1A73E8] rounded-md py-2 px-5 w-max text-white"
       >
-        Reffer Now
+        Refer Now
       </button>
       <Modal
         open={open}
@@ -63,27 +97,40 @@ const SimpleModal = () => {
           }}
         >
           <Typography id="form-modal-title" variant="h6" component="h2">
-            Refaral Form
+            Referral Form
           </Typography>
           <form onSubmit={handleSubmit} className="mb-5">
-            <TextField label="Name" name="name" fullWidth margin="normal" />
+            <TextField
+              label="Name"
+              name="name"
+              fullWidth
+              margin="normal"
+              error={!!errors.name}
+              helperText={errors.name}
+            />
             <TextField
               label="Friend's Name"
               name="FriendName"
               fullWidth
               margin="normal"
+              error={!!errors.FriendName}
+              helperText={errors.FriendName}
             />
             <TextField
               label="Friend's Email"
               name="FriendEmail"
               fullWidth
               margin="normal"
+              error={!!errors.FriendEmail}
+              helperText={errors.FriendEmail}
             />
             <TextField
               label="Course Name"
               name="course"
               fullWidth
               margin="normal"
+              error={!!errors.course}
+              helperText={errors.course}
             />
             <button
               className="mt-5 bg-[#1A73E8] mr-5 px-4 rounded text-white py-2"
